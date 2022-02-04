@@ -4,10 +4,6 @@ const mysql2 = require('mysql2')
 const fs = require('fs')
 
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
 //connect to db
 const db = mysql2.createConnection({
   host: 'db-mysql-nyc3-60739-do-user-8173291-0.b.db.ondigitalocean.com',
@@ -30,7 +26,7 @@ db.connect(err => {
 })
 
 
-const queryString = 'select * from test';
+const queryString = 'select * from pokemon';
 
 db.query(queryString, (err, res, fields) => {
   if (err) {
@@ -40,4 +36,11 @@ db.query(queryString, (err, res, fields) => {
   console.log('yup, thats a table');
 });
 
-db.end;
+db.query('select * from pokemon order by id limit 5 offset 5', (err,res,fields) => {
+  if(err) throw error;
+  
+  console.log( JSON.stringify(res));
+});
+
+
+db.end();
