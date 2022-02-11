@@ -10,7 +10,8 @@ const env = require('./resources/env.js')
 app.get('/',(req,res) => {
     res.send('Hello World!')
 })
-app.use('/pokemon',require('./routes/routes'))
+
+app.use('/',require('./routes/routes'))
 
 app.listen(port, () =>{
     console.log('app sitting on port ${port}')

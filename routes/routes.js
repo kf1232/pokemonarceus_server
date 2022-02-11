@@ -8,13 +8,11 @@ var pkmnAPI = express.Router()
 
 var pkmnQuery = require('../database/databaseLogic')
 
-pkmnAPI.get('/', (req, res) => {
+pkmnAPI.get('/pokemon', (req, res) => {
     pkmnQuery.getPokemon().then(result=>{
         res.send(JSON.stringify(result))
     })
 })
-
-
 
 
 module.exports = pkmnAPI
