@@ -1,7 +1,20 @@
+/*This is all just gros test code, it'll be removed*/
 const express = require('express')
+const http = require('http')
+const port = 3000
 const app = express()
 const mysql2 = require('mysql2')
 const fs = require('fs')
+
+app.get('/',(req,res) => {
+  res.send('Hello World!')
+})
+
+app.listen(port, () =>{
+  console.log('app sitting on port ${port}')
+})
+
+
 
 
 //connect to db
@@ -12,7 +25,7 @@ const db = mysql2.createConnection({
   password: 'NmlNmEsiRz95ps3t',
   database: 'defaultdb',
   ssl : {
-      ca: fs.readFileSync(__dirname + '/ca-certificate.crt'),
+      ca: fs.readFileSync(__dirname + '/resources/ca-certificate.crt'),
       rejectUnauthorized: false
   }
 })
@@ -26,7 +39,18 @@ db.connect(err => {
 })
 
 
-const queryString = 'select * from pokemon';
+
+
+const queryString = 'select * from pokemon'
+
+
+app.get('/pokemon', (req, res) => {
+  const result = res;
+  db.query(queryString, (err, res, fields) => {
+    result = res;
+  })
+  res.send(JSON.stringify(result))
+})
 
 db.query(queryString, (err, res, fields) => {
   if (err) {
@@ -36,9 +60,9 @@ db.query(queryString, (err, res, fields) => {
   console.log('yup, thats a table');
 });
 
-db.query('select * from pokemon order by id limit 5 offset 5', (err,res,fields) => {
+db.query('select * from pokemon order by id', (err,res,fields) => {
   if(err) throw error;
-  
+
   console.log( JSON.stringify(res));
 });
 
